@@ -1,4 +1,5 @@
-@import "tailwindcss";
+/* Escanea solo src/ para las clases (no depende de .gitignore en el servidor) */
+@import "tailwindcss" source("..");
 
 /* ─── Sistema de diseño MADDTV: Black + Crimson ─── */
 @theme {
