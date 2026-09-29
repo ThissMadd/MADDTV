@@ -11,18 +11,18 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakart
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} · IPTV Premium en España | 4K, sin cortes, prueba gratis`,
+    default: `${site.name} · IPTV Premium en España | 4K, sin cortes, activación inmediata`,
     template: `%s · ${site.name}`,
   },
   description:
-    "IPTV premium en España: miles de canales en HD y 4K, deportes, cine y series bajo demanda. Sin cortes, en todos tus dispositivos. Prueba gratis 24h y activación en 5 minutos.",
+    "IPTV premium en España: miles de canales en HD y 4K, deportes, cine y series bajo demanda. Sin cortes, en todos tus dispositivos y con activación en minutos.",
   keywords: ["IPTV España", "IPTV premium", "lista IPTV", "IPTV 4K", "suscripción IPTV", "IPTV Smart TV", "IPTV Fire TV"],
   openGraph: {
     type: "website",
     locale: "es_ES",
     siteName: site.name,
     title: `${site.name} · IPTV Premium en España`,
-    description: "Miles de canales en 4K, sin cortes. Prueba gratis 24h.",
+    description: "Miles de canales en 4K, sin cortes. Activación en minutos.",
   },
   twitter: { card: "summary_large_image" },
   alternates: { canonical: "/" },

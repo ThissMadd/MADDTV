@@ -78,13 +78,10 @@ export function Header() {
               <WhatsAppIcon className="text-wa size-4" /> {site.whatsappDisplay}
             </a>
             <a
-              href={waLink("Hola MADDTV 👋 Quiero la prueba gratis de 24H")}
-              target="_blank"
-              rel="noopener"
-              className="btn-anim btn-brand rounded-xl px-3 py-2.5 text-[13px] font-bold whitespace-nowrap min-[380px]:px-3.5 min-[380px]:text-sm sm:px-5"
+              href="/#planes"
+              className="btn-anim btn-brand rounded-xl px-3.5 py-2.5 text-sm font-bold whitespace-nowrap sm:px-5"
             >
-              <span className="min-[380px]:hidden">Prueba 24H</span>
-              <span className="hidden min-[380px]:inline">Prueba Gratis 24H</span>
+              Ver planes
             </a>
             <button
               onClick={() => setOpen((o) => !o)}

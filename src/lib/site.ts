@@ -23,7 +23,7 @@ export const site = {
     { v: "79.000+", l: "Canales en vivo", i: "tv" },
     { v: "4K", l: "Ultra HD", i: "monitor" },
     { v: "24/7", l: "Soporte", i: "headset" },
-    { v: "24H", l: "Prueba gratuita", i: "clock" },
+    { v: "15 días", l: "Garantía", i: "shield" },
   ],
   guaranteeDays: 15,
   payments: ["Visa", "Mastercard", "Apple Pay", "Google Pay", "Bizum", "PayPal"],

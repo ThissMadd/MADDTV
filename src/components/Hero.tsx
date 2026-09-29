@@ -1,5 +1,5 @@
-import { PlayCircle, ShieldCheck, Sparkles, Zap } from "lucide-react";
-import { site, waLink } from "@/lib/site";
+import { ShieldCheck, Sparkles, Trophy, Zap } from "lucide-react";
+import { site } from "@/lib/site";
 
 // Pósters del hero: archivos en public/hero/1.webp … 12.webp
 const heroPosters = Array.from({ length: 12 }, (_, i) => `/hero/${i + 1}.webp`);
@@ -72,16 +72,11 @@ export function Hero() {
             </Reveal>
 
             <Reveal delay={0.15} className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={waLink("Hola MADDTV 👋 Quiero la prueba gratis de 24H")}
-                target="_blank"
-                rel="noopener"
-                className="btn-gold btn-anim inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-10 py-4 text-lg font-bold"
-              >
-                <PlayCircle className="size-5" /> Prueba Gratis 24H
-              </a>
-              <a href="#planes" className="pill btn-anim inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-8 py-4 text-lg font-bold">
+              <a href="#planes" className="btn-gold btn-anim inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-10 py-4 text-lg font-bold">
                 <Sparkles className="size-4" /> Ver Planes
+              </a>
+              <a href="#deporte" className="pill btn-anim inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-8 py-4 text-lg font-bold">
+                <Trophy className="size-4" /> Ver deportes
               </a>
             </Reveal>
 
@@ -105,7 +100,7 @@ export function Hero() {
                 <ShieldCheck className="text-brand size-4" /> {site.guaranteeDays} días de garantía
               </span>
               <span className="pill inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold">
-                <Zap className="text-brand size-4" /> Prueba en 1 minuto
+                <Zap className="text-brand size-4" /> Activación en minutos
               </span>
             </Reveal>
           </div>
