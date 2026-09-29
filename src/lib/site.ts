@@ -45,17 +45,14 @@ export type Plan = {
 export const plans: Plan[] = [
   {
     id: "basico", name: "Básico", months: 3, price: 39, icon: "zap",
-    payLink: "https://buy.stripe.com/dRm6oA5zPap424G8JE24003?locale=es",
   },
   {
     id: "estandar", name: "Estándar", months: 12, price: 59, icon: "star",
     badge: { text: "Más popular", tone: "brand" }, highlight: "Año completo",
-    payLink: "https://buy.stripe.com/7sYdR2d2hgNs8t42lg24002?locale=es",
   },
   {
     id: "premium", name: "Premium", months: 18, price: 69, icon: "crown",
     badge: { text: "6 meses gratis", tone: "gold" },
-    payLink: "https://buy.stripe.com/eVqdR2bYdcxc5gScZU24004?locale=es",
   },
 ];
 
