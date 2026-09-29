@@ -1,0 +1,331 @@
+@import "tailwindcss";
+
+/* ─── Sistema de diseño MADDTV: Black + Crimson ─── */
+@theme {
+  --color-bg: #08090c;
+  --color-bg-2: #0e1015;
+  --color-card: #14161d;
+  --color-card-2: #181b23;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-line-hi: rgb(225 29 72 / 0.35);
+  --color-muted: #9ca3af;
+  --color-muted-2: #6b7280;
+  --color-brand: #e11d48;
+  --color-brand-2: #fb315b;
+  --color-brand-light: #fb315b;
+  --color-brand-dark: #be123c;
+  /* Dorado cálido: solo para detalles (4K, estrellas, badges pequeños) */
+  --color-gold: #f5c451;
+  --color-gold-2: #e8a93a;
+  --color-wa: #22c55e;
+  /* Radios: tarjetas 16–20px, botones 10–14px */
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+body {
+  background: var(--color-bg);
+  color: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgb(225 29 72 / 0.5);
+}
+
+/* Números grandes (precios, estadísticas): blanco */
+@utility text-num {
+  background: linear-gradient(180deg, #ffffff 0%, #e5e7eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Palabras destacadas: Crimson → Bright Crimson */
+@utility text-accent {
+  background: linear-gradient(95deg, #e11d48 0%, #fb315b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility card {
+  background: #14161d;
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+
+/* Botón principal: Crimson */
+@utility btn-brand {
+  background: #e11d48;
+  color: #fff;
+  box-shadow: 0 8px 22px -12px rgb(225 29 72 / 0.8), inset 0 1px 0 rgb(255 255 255 / 0.14);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Antiguo botón dorado: ahora es el mismo botón principal crimson */
+@utility btn-gold {
+  background: #e11d48;
+  color: #fff;
+  box-shadow: 0 8px 22px -12px rgb(225 29 72 / 0.8), inset 0 1px 0 rgb(255 255 255 / 0.14);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+a.btn-brand:hover, button.btn-brand:hover,
+a.btn-gold:hover, button.btn-gold:hover {
+  background: #fb315b;
+}
+
+/* Badge / chip: rojo oscuro translúcido con borde crimson */
+@utility pill {
+  border: 1px solid rgb(225 29 72 / 0.28);
+  background: rgb(225 29 72 / 0.07);
+}
+
+/* Badge sólido ("Más popular") */
+@utility badge-accent {
+  background: #e11d48;
+  color: #fff;
+}
+
+/* Fondos de sección: negro/carbón en capas, brillo crimson muy sutil solo donde importa */
+@utility section-glow {
+  background: #0e1015;
+}
+@utility section-glow-left {
+  background: #08090c;
+}
+@utility glow-crimson {
+  background:
+    radial-gradient(45% 55% at 50% 0%, rgb(225 29 72 / 0.1) 0%, transparent 70%),
+    #0e1015;
+}
+
+@keyframes marquee-left {
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes scroll-up {
+  to { transform: translateY(-50%); }
+}
+@keyframes scroll-down {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+.marquee-left { animation: marquee-left 45s linear infinite; }
+.marquee-right { animation: marquee-right 45s linear infinite; }
+.scroll-up { animation: scroll-up 38s linear infinite; }
+.scroll-down { animation: scroll-down 38s linear infinite; }
+
+.mask-x {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.mask-y {
+  mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* Indicador LIVE (latido suave, no parpadeo) */
+@keyframes live-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.live-dot {
+  animation: live-dot 1.8s ease-in-out infinite;
+  box-shadow: 0 0 8px rgb(251 49 91 / 0.8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─── Botones: pequeño desplazamiento, brillo y movimiento del icono ─── */
+.btn-anim {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.btn-anim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 25%, rgb(255 255 255 / 0.22) 50%, transparent 75%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.btn-anim:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+.btn-anim:hover::after {
+  transform: translateX(120%);
+}
+.btn-anim:active {
+  transform: translateY(-1px) scale(0.99);
+}
+.btn-anim svg {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-anim:hover svg {
+  transform: rotate(-12deg) scale(1.18);
+}
+.btn-brand.btn-anim:hover,
+.btn-gold.btn-anim:hover {
+  box-shadow: 0 14px 30px -14px rgb(225 29 72 / 0.85), inset 0 1px 0 rgb(255 255 255 / 0.18);
+}
+/* Botón secundario: transparente con borde crimson fino */
+.pill.btn-anim {
+  background: transparent;
+  border-color: rgb(225 29 72 / 0.55);
+}
+.pill.btn-anim:hover {
+  border-color: #fb315b;
+  background-color: rgb(225 29 72 / 0.08);
+}
+.bg-wa.btn-anim:hover,
+.btn-anim.from-\[\#22c55e\]:hover {
+  box-shadow: 0 14px 30px -14px rgb(34 197 94 / 0.6);
+}
+
+/* ─── Tarjetas: fondo oscuro, al pasar el ratón borde crimson y sombra muy sutil ─── */
+.plan-card {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.plan-card:hover {
+  transform: translateY(-5px);
+  border-color: rgb(225 29 72 / 0.35);
+  box-shadow: 0 20px 40px -24px rgb(225 29 72 / 0.45);
+}
+
+/* Plan destacado (12 meses): borde crimson y brillo interior/exterior muy sutil */
+.plan-featured {
+  border-color: #e11d48;
+  background:
+    radial-gradient(90% 45% at 50% 0%, rgb(225 29 72 / 0.12) 0%, transparent 70%),
+    #16181f;
+  box-shadow: 0 0 0 1px rgb(225 29 72 / 0.55), 0 24px 60px -28px rgb(225 29 72 / 0.55);
+}
+.plan-featured:hover {
+  border-color: #fb315b;
+  box-shadow: 0 0 0 1px #fb315b, 0 28px 60px -26px rgb(225 29 72 / 0.65);
+}
+
+/* Abanico de pósters (PosterFan) */
+.fan-card {
+  transform: translate(-50%, -50%) translateX(var(--x)) rotate(var(--r));
+  transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.fan:hover .fan-card {
+  transform: translate(-50%, -50%) translateX(var(--x-open)) translateY(var(--y-open)) rotate(var(--r-open)) scale(var(--s-open));
+}
+.fan .fan-card:hover {
+  z-index: 3 !important;
+  border-color: #fb315b;
+  box-shadow: 0 25px 50px -12px #000c, 0 0 24px -8px rgb(225 29 72 / 0.6);
+  transform: translate(-50%, -50%) translateX(var(--x-open)) translateY(-18px) rotate(0deg) scale(1.12);
+}
+
+/* Logos del carrusel */
+.logo-card {
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.25s ease;
+}
+.logo-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 0 0 2px #e11d48, 0 16px 30px -16px rgb(225 29 72 / 0.7);
+}
+
+/* Pósters de deporte */
+.poster-card {
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.poster-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: rgb(225 29 72 / 0.6);
+  box-shadow: 0 18px 34px -18px rgb(225 29 72 / 0.7);
+}
+
+/* Logos de dispositivos: al pasar el ratón, fondo blanco y logo negro */
+.logo-tile {
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.logo-tile img {
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+.logo-tile:hover {
+  transform: translateY(-5px);
+  background: #fff;
+  border-color: #e11d48;
+  box-shadow: 0 0 0 1px #e11d48, 0 16px 30px -18px rgb(225 29 72 / 0.7);
+}
+.logo-tile:hover img {
+  opacity: 1;
+  filter: brightness(0);
+}
+
+/* Tarjetas de opiniones */
+.review-card {
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.review-card:hover {
+  transform: translateY(-5px);
+  border-color: rgb(225 29 72 / 0.35);
+  box-shadow: 0 20px 40px -24px rgb(225 29 72 / 0.5);
+}
+
+/* Preguntas frecuentes */
+.faq-card {
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.faq-card:hover {
+  transform: translateY(-2px);
+  border-color: rgb(225 29 72 / 0.3);
+}
+.faq-card[data-open="true"] {
+  border-color: rgb(225 29 72 / 0.5);
+}
+
+/* Texto de páginas informativas (reembolso, privacidad…) */
+.legal-prose { color: #9ca3af; font-size: 15px; line-height: 1.8; }
+.legal-prose h2 { font-family: var(--font-display); color: #fff; line-height: 1.25; font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 14px; }
+.legal-prose h3 { font-family: var(--font-display); color: #fff; line-height: 1.3; font-size: 19px; font-weight: 800; letter-spacing: -0.015em; margin: 36px 0 12px; }
+.legal-prose p { margin: 0 0 14px; }
+.legal-prose strong { color: #fff; font-weight: 700; }
+.legal-prose ul { margin: 12px 0 16px; padding: 0; list-style: none; }
+.legal-prose li { position: relative; padding-left: 18px; margin-bottom: 10px; }
+.legal-prose li::before { content: ""; position: absolute; left: 2px; top: 0.72em; width: 6px; height: 6px; border-radius: 9999px; background: #e11d48; }
+.legal-prose a { color: #fb315b; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s ease; }
+.legal-prose a:hover { color: #fff; }
+@media (min-width: 640px) {
+  .legal-prose { font-size: 16px; }
+  .legal-prose h2 { font-size: 28px; }
+  .legal-prose h3 { font-size: 21px; }
+}
+
+/* Logo: sube un poco y el icono gira al pasar el ratón */
+.logo-link {
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.logo-link svg {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+}
+.logo-link:hover {
+  transform: translateY(-2px);
+}
+.logo-link:hover svg {
+  transform: rotate(-10deg) scale(1.12);
+  filter: drop-shadow(0 0 8px rgb(225 29 72 / 0.55));
+}

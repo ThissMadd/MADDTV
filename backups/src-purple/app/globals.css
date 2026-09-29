@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #070512;
+  --color-bg-2: #0b0820;
+  --color-card: #120d2a;
+  --color-card-2: #171036;
+  --color-line: #2a1f5a;
+  --color-muted: #a59fc4;
+  --color-brand: #7c3aed;
+  --color-brand-2: #9d5cff;
+  --color-brand-light: #c4a8ff;
+  --color-gold: #fcd34d;
+  --color-gold-2: #f5b300;
+  --color-wa: #22c55e;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+body {
+  background: var(--color-bg);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #7c3aed99;
+}
+
+/* Números con degradado dorado → lila (precios, estadísticas) */
+@utility text-num {
+  background: linear-gradient(100deg, #fde68a 0%, #d8c7ff 55%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility card {
+  background: linear-gradient(180deg, #16103a 0%, #0e0a24 100%);
+  border: 1px solid #2a1f5a;
+}
+
+@utility btn-brand {
+  background: linear-gradient(180deg, #8b4dff 0%, #6d28d9 100%);
+  box-shadow: 0 10px 30px -10px #7c3aedcc, inset 0 1px 0 #ffffff30;
+}
+
+@utility btn-gold {
+  background: linear-gradient(180deg, #fde047 0%, #facc15 100%);
+  color: #1a1305;
+  box-shadow: 0 10px 30px -12px #facc15aa, inset 0 1px 0 #ffffff80;
+}
+
+@utility pill {
+  border: 1px solid #3b2d7a;
+  background: #140e33cc;
+}
+
+/* Fondo de sección: oscuro con resplandor morado a la derecha (como el diseño) */
+@utility section-glow {
+  background:
+    radial-gradient(55% 60% at 100% 30%, #3b1d8a66 0%, transparent 70%),
+    linear-gradient(180deg, #0a0719 0%, #0d0922 100%);
+}
+@utility section-glow-left {
+  background:
+    radial-gradient(45% 55% at 0% 25%, #3b1d8a66 0%, transparent 70%),
+    #06040f;
+}
+
+@keyframes marquee-left {
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes scroll-up {
+  to { transform: translateY(-50%); }
+}
+@keyframes scroll-down {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+.marquee-left { animation: marquee-left 45s linear infinite; }
+.marquee-right { animation: marquee-right 45s linear infinite; }
+.scroll-up { animation: scroll-up 38s linear infinite; }
+.scroll-down { animation: scroll-down 38s linear infinite; }
+
+.mask-x {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.mask-y {
+  mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Botones con animación al pasar el ratón: suben, brillan y mueven el icono */
+.btn-anim {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, background-color 0.35s ease, border-color 0.35s ease;
+}
+.btn-anim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 25%, #ffffff66 50%, transparent 75%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.btn-anim:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+.btn-anim:hover::after {
+  transform: translateX(120%);
+}
+.btn-anim:active {
+  transform: translateY(-1px) scale(0.99);
+}
+.btn-anim svg {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-anim:hover svg {
+  transform: rotate(-14deg) scale(1.25);
+}
+.btn-gold.btn-anim:hover {
+  box-shadow: 0 18px 40px -10px #facc15cc, inset 0 1px 0 #ffffff80;
+}
+.pill.btn-anim:hover {
+  border-color: #8b5cf6;
+  background-color: #7c3aed26;
+  box-shadow: 0 18px 40px -12px #7c3aedaa;
+}
+
+/* Tarjetas de planes: suben y muestran un borde morado brillante al pasar el ratón */
+.plan-card {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.plan-card:hover {
+  transform: translateY(-10px);
+  border-color: #9d5cff;
+  box-shadow:
+    0 0 0 1px #9d5cff,
+    0 0 28px -4px #8b5cf6aa,
+    0 30px 60px -20px #7c3aedcc;
+}
+
+/* Abanico de pósters (PosterFan) */
+.fan-card {
+  transform: translate(-50%, -50%) translateX(var(--x)) rotate(var(--r));
+  transition: transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.fan:hover .fan-card {
+  transform: translate(-50%, -50%) translateX(var(--x-open)) translateY(var(--y-open)) rotate(var(--r-open)) scale(var(--s-open));
+}
+.fan .fan-card:hover {
+  z-index: 3 !important;
+  border-color: #c4a8ff;
+  box-shadow: 0 25px 50px -12px #000c, 0 0 30px -5px #9d5cffaa;
+  transform: translate(-50%, -50%) translateX(var(--x-open)) translateY(-18px) rotate(0deg) scale(1.12);
+}
+
+/* Logos del carrusel: suben un poco y brillan al pasar el ratón */
+.logo-card {
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.35s ease;
+}
+.logo-card:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 0 0 2px #9d5cff, 0 16px 30px -10px #7c3aedcc;
+}
+
+/* Pósters de deporte: suben un poco y brillan al pasar el ratón */
+.poster-card {
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.poster-card:hover {
+  transform: translateY(-10px) scale(1.04);
+  border-color: #9d5cff;
+  box-shadow: 0 0 0 1px #9d5cff, 0 18px 34px -10px #7c3aedcc;
+}
+
+/* Logos de dispositivos: al pasar el ratón, fondo blanco y logo negro */
+.logo-tile {
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.35s ease;
+}
+.logo-tile img {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+.logo-tile:hover {
+  transform: translateY(-6px);
+  background: #fff;
+  border-color: #fff;
+  box-shadow: 0 16px 30px -12px #7c3aedcc;
+}
+.logo-tile:hover img {
+  opacity: 1;
+  filter: brightness(0);
+}
+
+/* Tarjetas de opiniones: suben y brillan al pasar el ratón */
+.review-card {
+  transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.review-card:hover {
+  transform: translateY(-10px);
+  border-color: #9d5cff;
+  box-shadow: 0 0 0 1px #9d5cff, 0 22px 40px -14px #7c3aedcc;
+}
+
+.btn-brand.btn-anim:hover {
+  box-shadow: 0 18px 40px -10px #7c3aedcc, inset 0 1px 0 #ffffff30;
+}
+.bg-wa.btn-anim:hover,
+.btn-anim.from-\[\#22c55e\]:hover {
+  box-shadow: 0 18px 36px -12px #22c55ecc;
+}
+
+/* Preguntas frecuentes: se desplazan un poco y se iluminan al pasar el ratón */
+.faq-card {
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.faq-card:hover {
+  transform: translateY(-3px);
+  border-color: #9d5cff;
+  box-shadow: 0 14px 30px -14px #7c3aedcc;
+}
