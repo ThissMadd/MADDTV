@@ -4,8 +4,8 @@ export const site = {
   name: "MADDTV",
   url: "https://maddtv.com",
   // Número de WhatsApp en formato internacional sin "+" ni espacios
-  whatsapp: "34657428620",
-  whatsappDisplay: "+34 657 428 620",
+  whatsapp: "17866281087",
+  whatsappDisplay: "+1 (786) 628-1087",
   email: "contacto@maddtv.com",
   // ID de Meta Pixel (Facebook / Instagram Ads). Déjalo vacío ("") para desactivarlo
   metaPixelId: "1737103708416251",
