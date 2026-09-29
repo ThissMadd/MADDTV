@@ -55,7 +55,11 @@ export default function PrivacyPolicyPage() {
           Sus mensajes se transmiten a través de WhatsApp y del proveedor de correo, que actúan conforme a sus propias
           políticas de privacidad.
         </li>
-        <li>Esta web no utiliza cookies de publicidad ni de seguimiento; solo almacenamiento técnico necesario para su funcionamiento.</li>
+        <li>
+          Esta web utiliza Meta Pixel (Meta Platforms) para medir la eficacia de nuestros anuncios en Facebook e Instagram: registra
+          visitas y acciones como ver los planes o solicitar uno. Puede consultar la{" "}
+          <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener">política de privacidad de Meta</a>.
+        </li>
       </ul>
 
       <h3>5. Sus derechos</h3>

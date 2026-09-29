@@ -7,6 +7,8 @@ export const site = {
   whatsapp: "34657428620",
   whatsappDisplay: "+34 657 428 620",
   email: "contacto@maddtv.com",
+  // ID de Meta Pixel (Facebook / Instagram Ads). Déjalo vacío ("") para desactivarlo
+  metaPixelId: "1737103708416251",
   // ⚠️ Pon aquí los datos REALES de tu perfil de Trustpilot, o deja rating en null para ocultarlo
   rating: {
     score: "4.8",

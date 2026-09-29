@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   BarChart3, CalendarRange, Clock, Crown, Gift, Infinity as InfinityIcon, Layers, Monitor, MonitorSmartphone,
@@ -9,6 +8,7 @@ import {
 } from "lucide-react";
 import { type Mode, type Plan, lifetime, paymentLogo, periodLabel, plans, site, waLink } from "@/lib/site";
 import { Heading } from "./ui";
+import { trackPixel } from "@/lib/pixel";
 import { PosterFan } from "./PosterFan";
 import { Reveal } from "./Reveal";
 
@@ -86,12 +86,26 @@ function PlanCard({ plan, mode, i }: { plan: Plan; mode: Mode; i: number }) {
             </li>
           ))}
         </ul>
-        <Link
-          href={`/checkout?plan=${plan.id}&mode=${mode}`}
+        <a
+          href={waLink(
+            `Hola ${site.name} 👋 Quiero el plan *${plan.name}* (${periodLabel(plan)}) · ${
+              mode === "single" ? "1 dispositivo" : `${site.multiScreens} dispositivos`
+            } · ${plan.price[mode]} €.`,
+          )}
+          target="_blank"
+          rel="noopener"
+          onClick={() =>
+            trackPixel("InitiateCheckout", {
+              content_name: `${plan.name} (${periodLabel(plan)}) · ${mode === "single" ? "1 dispositivo" : `${site.multiScreens} dispositivos`}`,
+              value: plan.price[mode],
+              currency: "EUR",
+              num_items: 1,
+            })
+          }
           className="btn-anim btn-brand mt-8 flex min-h-[48px] items-center justify-center gap-2 rounded-xl py-3.5 text-base font-bold"
         >
           <ShoppingCart className="size-[18px]" /> Ordenar ahora
-        </Link>
+        </a>
         <p className="mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold">
           <ShieldCheck className="text-muted size-3.5" /> <span className="text-muted">Pago seguro</span>
         </p>
@@ -161,6 +175,9 @@ function LifetimeOffer() {
             href={waLink(`Hola ${site.name} 👋 Quiero la *${lifetime.name}* (${periodLabel(lifetime)}) por ${lifetime.price.single} €.`)}
             target="_blank"
             rel="noopener"
+            onClick={() =>
+              trackPixel("InitiateCheckout", { content_name: lifetime.name, value: lifetime.price.single, currency: "EUR", num_items: 1 })
+            }
             className="btn-anim btn-brand mt-4 flex min-h-[46px] items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold"
           >
             <ShoppingCart className="size-5" /> Pedir acceso de por vida
@@ -176,6 +193,26 @@ function LifetimeOffer() {
 
 export function Pricing() {
   const [mode, setMode] = useState<Mode>("single");
+
+  // ViewContent: una sola vez por visita, cuando la sección de planes entra en pantalla
+  useEffect(() => {
+    const el = document.getElementById("planes");
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        try {
+          if (sessionStorage.getItem("px-planes")) return;
+          sessionStorage.setItem("px-planes", "1");
+        } catch {}
+        trackPixel("ViewContent", { content_name: "Planes", content_category: "Suscripción IPTV", currency: "EUR" });
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const tabs = [
     { id: "single" as const, label: "1 dispositivo", icon: Monitor },
     { id: "multi" as const, label: "Multi dispositivos", icon: MonitorSmartphone },
