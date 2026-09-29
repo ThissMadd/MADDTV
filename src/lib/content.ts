@@ -56,7 +56,7 @@ export const why = [
 ];
 
 export const steps = [
-  { t: "Elige tu plan", d: "Selecciona duración y número de pantallas según tu uso." },
+  { t: "Elige tu plan", d: "Selecciona la duración que mejor se adapte a ti." },
   { t: "Confirma de forma segura", d: "Consulta disponibilidad y método de pago con soporte oficial." },
   { t: "Empieza a mirar", d: "Recibe instrucciones, configura tu app y empieza a usar MADDTV." },
 ];
@@ -127,7 +127,7 @@ export const faqs = [
   { q: "¿Cómo se suscribe uno a IPTV?", a: "Elige tu plan, pulsa «Ordenar ahora» y completa el pedido. Te enviamos los datos de acceso y una guía de instalación para tu dispositivo por WhatsApp o email." },
   { q: "¿Puedo pagar mi suscripción con tarjeta bancaria?", a: "Sí. Aceptamos tarjeta, Apple Pay, Google Pay, Bizum y PayPal. Te confirmamos el método disponible al procesar tu pedido." },
   { q: "¿Cómo recibo mi suscripción?", a: "Tras confirmar el pago recibes tus datos de acceso en pocos minutos por WhatsApp y email, junto con las instrucciones de instalación." },
-  { q: "¿Puedo usar IPTV en varios dispositivos simultáneamente?", a: "Sí. Elige la opción «Multi dispositivos» en los planes para ver hasta 3 pantallas a la vez. Puedes instalarlo en todos tus dispositivos." },
+  { q: "¿Puedo usar IPTV en varios dispositivos simultáneamente?", a: "Cada suscripción incluye 1 pantalla activa a la vez. Puedes instalar la aplicación en todos tus dispositivos, pero solo reproducir en uno al mismo tiempo." },
   { q: "¿Necesito una antena parabólica para usar IPTV?", a: "No. Solo necesitas conexión a internet (recomendamos 15 Mbps o más para 4K) y un dispositivo compatible." },
   { q: "¿Este servicio IPTV funciona en mi país?", a: "El servicio está optimizado para España, pero funciona en cualquier país con una conexión a internet estable." },
   { q: "¿MADDTV funciona en Smart TV, Fire TV y Android TV?", a: "Sí. Funciona en Smart TV (Samsung, LG, etc.), Fire TV, Android TV, Apple TV, móviles, tablets, PC y reproductores como MAG o Formuler." },

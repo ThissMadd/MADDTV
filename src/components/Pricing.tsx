@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useEffect } from "react";
 import {
-  BarChart3, CalendarRange, Clock, Crown, Gift, Infinity as InfinityIcon, Layers, Monitor, MonitorSmartphone,
+  BarChart3, CalendarRange, Clock, Crown, Gift, Infinity as InfinityIcon, Layers, Monitor,
   PlayCircle, RefreshCw, ShieldCheck, ShoppingCart, Star, Trophy, Tv, Zap,
 } from "lucide-react";
-import { type Mode, type Plan, lifetime, paymentLogo, periodLabel, plans, site, waLink } from "@/lib/site";
+import { type Plan, lifetime, paymentLogo, periodLabel, plans, site, waLink } from "@/lib/site";
 import { Heading } from "./ui";
 import { trackPixel } from "@/lib/pixel";
 import { PosterFan } from "./PosterFan";
@@ -29,9 +28,9 @@ function Price({ value, period, size = "lg" }: { value: number; period?: string;
   );
 }
 
-function features(mode: Mode) {
+function features() {
   return [
-    { i: Monitor, t: mode === "single" ? "1 pantalla activa" : `${site.multiScreens} pantallas simultáneas` },
+    { i: Monitor, t: "1 pantalla activa" },
     { i: Trophy, t: "Fútbol europeo, fútbol español y F1" },
     { i: BarChart3, t: "Canales, películas y series incluidos" },
     { i: PlayCircle, t: "Entretenimiento, cine, series y deporte" },
@@ -42,7 +41,7 @@ function features(mode: Mode) {
   ];
 }
 
-function PlanCard({ plan, mode, i }: { plan: Plan; mode: Mode; i: number }) {
+function PlanCard({ plan, i }: { plan: Plan; i: number }) {
   const PlanIcon = planIcons[plan.icon];
   const featured = plan.badge?.tone === "brand";
   return (
@@ -65,11 +64,7 @@ function PlanCard({ plan, mode, i }: { plan: Plan; mode: Mode; i: number }) {
         </span>
         <h3 className="font-display mt-5 text-[22px] font-extrabold tracking-tight">{plan.name}</h3>
         <div className="mt-1.5 h-[58px]">
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div key={mode} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
-              <Price value={plan.price[mode]} period={periodLabel(plan)} />
-            </motion.div>
-          </AnimatePresence>
+          <Price value={plan.price} period={periodLabel(plan)} />
         </div>
         {plan.highlight && (
           <span className="pill mt-2 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-extrabold uppercase">
@@ -80,24 +75,23 @@ function PlanCard({ plan, mode, i }: { plan: Plan; mode: Mode; i: number }) {
           <Gift className="text-brand size-4" /> Asistencia de instalación incluida
         </p>
         <ul className="mt-5 flex-1 space-y-3">
-          {features(mode).map((f) => (
+          {features().map((f) => (
             <li key={f.t} className="text-muted flex items-center gap-2.5 text-[12.5px] min-[360px]:whitespace-nowrap min-[400px]:text-sm sm:text-[14.5px] lg:text-[12.5px] xl:text-[14.5px]">
               <f.i className="text-brand size-4 shrink-0" /> {f.t}
             </li>
           ))}
         </ul>
         <a
-          href={waLink(
-            `Hola ${site.name} 👋 Quiero el plan *${plan.name}* (${periodLabel(plan)}) · ${
-              mode === "single" ? "1 dispositivo" : `${site.multiScreens} dispositivos`
-            } · ${plan.price[mode]} €.`,
-          )}
+          href={
+            plan.payLink ??
+            waLink(`Hola ${site.name} 👋 Quiero el plan *${plan.name}* (${periodLabel(plan)}) · ${plan.price} €.`)
+          }
           target="_blank"
           rel="noopener"
           onClick={() =>
             trackPixel("InitiateCheckout", {
-              content_name: `${plan.name} (${periodLabel(plan)}) · ${mode === "single" ? "1 dispositivo" : `${site.multiScreens} dispositivos`}`,
-              value: plan.price[mode],
+              content_name: `${plan.name} (${periodLabel(plan)})`,
+              value: plan.price,
               currency: "EUR",
               num_items: 1,
             })
@@ -169,14 +163,14 @@ function LifetimeOffer() {
         />
 
         <div className="card plan-card rounded-2xl p-5 text-center sm:p-6">
-          <div className="flex justify-center"><Price value={lifetime.price.single} size="xl" /></div>
+          <div className="flex justify-center"><Price value={lifetime.price} size="xl" /></div>
           <p className="text-muted mt-3 text-sm sm:text-base">pago único — sin renovación automática</p>
           <a
-            href={waLink(`Hola ${site.name} 👋 Quiero la *${lifetime.name}* (${periodLabel(lifetime)}) por ${lifetime.price.single} €.`)}
+            href={waLink(`Hola ${site.name} 👋 Quiero la *${lifetime.name}* (${periodLabel(lifetime)}) por ${lifetime.price} €.`)}
             target="_blank"
             rel="noopener"
             onClick={() =>
-              trackPixel("InitiateCheckout", { content_name: lifetime.name, value: lifetime.price.single, currency: "EUR", num_items: 1 })
+              trackPixel("InitiateCheckout", { content_name: lifetime.name, value: lifetime.price, currency: "EUR", num_items: 1 })
             }
             className="btn-anim btn-brand mt-4 flex min-h-[46px] items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold"
           >
@@ -192,8 +186,6 @@ function LifetimeOffer() {
 }
 
 export function Pricing() {
-  const [mode, setMode] = useState<Mode>("single");
-
   // ViewContent: una sola vez por visita, cuando la sección de planes entra en pantalla
   useEffect(() => {
     const el = document.getElementById("planes");
@@ -213,10 +205,6 @@ export function Pricing() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
-  const tabs = [
-    { id: "single" as const, label: "1 dispositivo", icon: Monitor },
-    { id: "multi" as const, label: "Multi dispositivos", icon: MonitorSmartphone },
-  ];
 
   return (
     <section id="planes" className="section-glow py-12 sm:py-16">
@@ -224,31 +212,12 @@ export function Pricing() {
         <Heading
           eyebrow="Planes y precios"
           title={<>Elige el plan <span className="text-accent">perfecto para ti</span></>}
-          text="Elige la duración y el número de pantallas. Te ayudamos con la instalación por WhatsApp."
+          text="Elige la duración de tu suscripción. Te ayudamos con la instalación por WhatsApp."
         />
 
-        <Reveal className="mt-10 flex justify-center">
-          <div className="pill inline-flex rounded-2xl p-1.5 ">
-            {tabs.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setMode(t.id)}
-                className={`relative flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-colors sm:px-8 sm:text-base ${
-                  mode === t.id ? "text-white" : "text-muted hover:text-white"
-                }`}
-              >
-                {mode === t.id && (
-                  <motion.span layoutId="mode-pill" className="btn-gold absolute inset-0 rounded-xl" transition={{ type: "spring", bounce: 0.2, duration: 0.45 }} />
-                )}
-                <t.icon className="relative size-4" />
-                <span className="relative">{t.label}</span>
-              </button>
-            ))}
-          </div>
-        </Reveal>
 
         <div className="mx-auto mt-10 grid max-w-xl gap-6 lg:max-w-none lg:grid-cols-3">
-          {plans.map((p, i) => <PlanCard key={p.id} plan={p} mode={mode} i={i} />)}
+          {plans.map((p, i) => <PlanCard key={p.id} plan={p} i={i} />)}
         </div>
 
         <Reveal className="mt-10">

@@ -42,8 +42,8 @@ const jsonLd = [
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: "EUR",
-      lowPrice: Math.min(...allPlans.map((p) => p.price.single)),
-      highPrice: Math.max(...allPlans.map((p) => p.price.multi)),
+      lowPrice: Math.min(...allPlans.map((p) => p.price)),
+      highPrice: Math.max(...allPlans.map((p) => p.price)),
       offerCount: allPlans.length,
     },
   },

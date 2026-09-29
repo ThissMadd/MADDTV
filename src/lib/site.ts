@@ -26,37 +26,41 @@ export const site = {
     { v: "24H", l: "Prueba gratuita", i: "clock" },
   ],
   guaranteeDays: 15,
-  multiScreens: 3,
   payments: ["Visa", "Mastercard", "Apple Pay", "Google Pay", "Bizum", "PayPal"],
 };
-
-export type Mode = "single" | "multi";
 
 export type Plan = {
   id: string;
   name: string;
   months: number | null; // null = de por vida
-  price: Record<Mode, number>;
+  price: number;
   icon: "zap" | "star" | "crown";
   badge?: { text: string; tone: "brand" | "gold" };
+  // Enlace de pago directo (Stripe…); si no hay, el botón abre WhatsApp
+  payLink?: string;
   highlight?: string;
   extra?: string[];
 };
 
 export const plans: Plan[] = [
-  { id: "basico", name: "Básico", months: 3, price: { single: 39, multi: 49 }, icon: "zap" },
   {
-    id: "estandar", name: "Estándar", months: 12, price: { single: 59, multi: 69 }, icon: "star",
-    badge: { text: "Más popular", tone: "brand" }, highlight: "Año completo",
+    id: "basico", name: "Básico", months: 3, price: 39, icon: "zap",
+    payLink: "https://buy.stripe.com/dRm6oA5zPap424G8JE24003?locale=es",
   },
   {
-    id: "premium", name: "Premium", months: 18, price: { single: 69, multi: 89 }, icon: "crown",
+    id: "estandar", name: "Estándar", months: 12, price: 59, icon: "star",
+    badge: { text: "Más popular", tone: "brand" }, highlight: "Año completo",
+    payLink: "https://buy.stripe.com/7sYdR2d2hgNs8t42lg24002?locale=es",
+  },
+  {
+    id: "premium", name: "Premium", months: 18, price: 69, icon: "crown",
     badge: { text: "6 meses gratis", tone: "gold" },
+    payLink: "https://buy.stripe.com/eVqdR2bYdcxc5gScZU24004?locale=es",
   },
 ];
 
 export const lifetime: Plan = {
-  id: "vida", name: "Suprema de por vida", months: null, price: { single: 199, multi: 199 }, icon: "crown",
+  id: "vida", name: "Suprema de por vida", months: null, price: 199, icon: "crown",
 };
 
 export const allPlans = [...plans, lifetime];

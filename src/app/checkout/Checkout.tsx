@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
-import { ArrowLeft, Check, Lock, Monitor, MonitorSmartphone, ShieldCheck, ShoppingCart } from "lucide-react";
-import { type Mode, allPlans, eur, paymentLogo, periodLabel, site, waLink } from "@/lib/site";
+import { ArrowLeft, Check, Lock, ShieldCheck, ShoppingCart } from "lucide-react";
+import { allPlans, eur, paymentLogo, periodLabel, site, waLink } from "@/lib/site";
 import { devices } from "@/lib/content";
 import { Logo, WhatsAppIcon } from "@/components/ui";
 
@@ -15,14 +15,11 @@ const input =
 export function Checkout() {
   const params = useSearchParams();
   const [planId, setPlanId] = useState(() => allPlans.find((p) => p.id === params.get("plan"))?.id ?? "estandar");
-  const [mode, setMode] = useState<Mode>(() => (params.get("mode") === "multi" ? "multi" : "single"));
   const [method, setMethod] = useState(site.payments[0]);
   const [form, setForm] = useState({ name: "", email: "", phone: "", device: devices[0] });
 
   const plan = allPlans.find((p) => p.id === planId)!;
-  const effectiveMode: Mode = plan.months === null ? "single" : mode;
-  const total = plan.price[effectiveMode];
-  const screens = effectiveMode === "multi" ? site.multiScreens : 1;
+  const total = plan.price;
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,7 +27,6 @@ export function Checkout() {
       `Hola ${site.name} 👋 Quiero activar mi suscripción:`,
       "",
       `📦 Plan: *${plan.name}* (${periodLabel(plan)})`,
-      `📺 Pantallas: ${screens}`,
       `💶 Total: *${eur(total)}*`,
       `💳 Pago: ${method}`,
       "",
@@ -64,21 +60,8 @@ export function Checkout() {
           <div className="min-w-0 space-y-6">
             <section className="card rounded-3xl p-5 sm:p-8">
               <h2 className="font-display text-lg font-extrabold">1. Elige tu plan</h2>
-              <div className="pill mt-5 inline-flex rounded-2xl p-1">
-                {([["single", "1 dispositivo", Monitor], ["multi", "Multi dispositivos", MonitorSmartphone]] as const).map(([id, label, I]) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setMode(id)}
-                    className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-bold transition sm:px-5 ${mode === id ? "btn-gold" : "text-white/80"}`}
-                  >
-                    <I className="size-4" /> {label}
-                  </button>
-                ))}
-              </div>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {allPlans.map((p) => {
-                  const m: Mode = p.months === null ? "single" : mode;
                   return (
                     <label
                       key={p.id}
@@ -91,7 +74,7 @@ export function Checkout() {
                         <div className="font-bold">{p.name}</div>
                         <div className="text-muted text-sm">{periodLabel(p)}</div>
                       </div>
-                      <div className="font-display text-num text-2xl font-extrabold">{eur(p.price[m])}</div>
+                      <div className="font-display text-num text-2xl font-extrabold">{eur(p.price)}</div>
                     </label>
                   );
                 })}
@@ -139,7 +122,6 @@ export function Checkout() {
               <dl className="mt-6 space-y-3 text-sm">
                 <div className="flex justify-between"><dt className="text-muted">Plan</dt><dd className="font-bold">{plan.name}</dd></div>
                 <div className="flex justify-between"><dt className="text-muted">Duración</dt><dd className="font-bold">{periodLabel(plan)}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted">Pantallas</dt><dd className="font-bold">{screens}</dd></div>
                 <div className="flex justify-between"><dt className="text-muted">Pago</dt><dd className="font-bold">{method}</dd></div>
               </dl>
               <div className="border-line mt-6 flex items-end justify-between border-t pt-6">
