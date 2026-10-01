@@ -24,6 +24,18 @@ export function MetaPixel() {
     trackPixel("PageView");
   }, [pathname]);
 
+  // Contact: cualquier clic en un enlace de WhatsApp para preguntar.
+  // Los botones de pedido (data-order) ya envían Lead y se excluyen.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[href*="wa.me/"]');
+      if (!a || a.hasAttribute("data-order")) return;
+      trackPixel("Contact");
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
+
   if (!id) return null;
 
   return (

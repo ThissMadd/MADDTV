@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { type Plan, lifetime, paymentLogo, periodLabel, plans, site, waLink } from "@/lib/site";
 import { Heading } from "./ui";
-import { trackPixel } from "@/lib/pixel";
+import { trackOrder, trackPixel } from "@/lib/pixel";
 import { PosterFan } from "./PosterFan";
 import { Reveal } from "./Reveal";
 
@@ -88,14 +88,8 @@ function PlanCard({ plan, i }: { plan: Plan; i: number }) {
           }
           target="_blank"
           rel="noopener"
-          onClick={() =>
-            trackPixel("InitiateCheckout", {
-              content_name: `${plan.name} (${periodLabel(plan)})`,
-              value: plan.price,
-              currency: "EUR",
-              num_items: 1,
-            })
-          }
+          data-order
+          onClick={() => trackOrder(`${plan.name} (${periodLabel(plan)})`, plan.price)}
           className="btn-anim btn-brand mt-8 flex min-h-[48px] items-center justify-center gap-2 rounded-xl py-3.5 text-base font-bold"
         >
           <ShoppingCart className="size-[18px]" /> Ordenar ahora
@@ -169,9 +163,8 @@ function LifetimeOffer() {
             href={waLink(`Hola ${site.name} 👋 Quiero la *${lifetime.name}* (${periodLabel(lifetime)}) por ${lifetime.price} €.`)}
             target="_blank"
             rel="noopener"
-            onClick={() =>
-              trackPixel("InitiateCheckout", { content_name: lifetime.name, value: lifetime.price, currency: "EUR", num_items: 1 })
-            }
+            data-order
+            onClick={() => trackOrder(lifetime.name, lifetime.price)}
             className="btn-anim btn-brand mt-4 flex min-h-[46px] items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold"
           >
             <ShoppingCart className="size-5" /> Pedir acceso de por vida
